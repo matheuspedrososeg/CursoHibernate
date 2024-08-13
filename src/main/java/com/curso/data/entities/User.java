@@ -1,8 +1,8 @@
 package com.curso.data.entities;
 
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
 
 import java.util.Date;
 
@@ -19,6 +19,8 @@ public class User {
     private String lastUpdatedBy;
     private Date createdDate;
     private String createdBy;
+    private boolean valid;
+    private int age;
 
 
     @Id
@@ -58,6 +60,7 @@ public class User {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
+
     @Column(name = "EMAIL_ADDRESS")
     public String getEmailAddress() {
         return emailAddress;
@@ -85,7 +88,7 @@ public class User {
         this.lastUpdatedBy = lastUpdated;
     }
 
-    @Column(name = "CREATED_DATE")
+    @Column(name = "CREATED_DATE", updatable = false)
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -94,7 +97,7 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    @Column(name = "CREATED_BY")
+    @Column(name = "CREATED_BY", updatable = false)
     public String getCreatedBy() {
         return createdBy;
     }
@@ -102,4 +105,23 @@ public class User {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
+
+    @Transient
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    @Formula("(FLOOR(DATEDIFF(CURDATE(), birth_date) / 365.25))")
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
 }
