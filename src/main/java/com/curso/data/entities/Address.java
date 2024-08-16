@@ -26,7 +26,6 @@ public class Address {
     public void setAddressLine1(String addressLine1) {
         this.addressLine1 = addressLine1;
     }
-
     public String getAddressLine2() {
         return addressLine2;
     }
@@ -42,7 +41,6 @@ public class Address {
     public void setCity(String city) {
         this.city = city;
     }
-
     public String getState() {
         return state;
     }

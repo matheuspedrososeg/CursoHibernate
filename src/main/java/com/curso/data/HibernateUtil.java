@@ -1,6 +1,5 @@
 package com.curso.data;
 
-import com.curso.data.entities.Bank;
 import com.curso.data.entities.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -12,14 +11,14 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         try {
             Configuration configuration = new Configuration();
-            configuration.addAnnotatedClass(Bank.class);
+            configuration.addAnnotatedClass(User.class);
             return configuration.
                     buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("There was an error building the session factory.");
         }
+        return null;
     }
     public static SessionFactory getSessionFactory() {
         return sessionFactory;

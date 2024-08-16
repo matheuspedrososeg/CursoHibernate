@@ -14,10 +14,12 @@
 
         <property name="hibernate.format_sql">true</property>
 
+
         <!-- Mention annotated class -->
         <mapping class="com.curso.data.entities.User"/>
         <mapping class="com.curso.data.entities.TimeTest"/>
         <mapping class="com.curso.data.entities.Bank"/>
+        <mapping class="com.curso.data.entities.Credential"/>
 
     </session-factory>
 </hibernate-configuration>

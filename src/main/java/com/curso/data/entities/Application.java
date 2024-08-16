@@ -3,7 +3,6 @@ package com.curso.data.entities;
 import com.curso.data.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,24 +11,18 @@ public class Application {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
-            Bank bank = new Bank();
-            bank.setName("Federal Trust");
-            bank.getAddress().setAddressLine1("33 Wall Street");
-            bank.getAddress().setAddressLine2("Suite 302");
-            bank.getAddress().setCity("New York");
-            bank.getAddress().setState("NY");
-            bank.getAddress().setZipCode("27914");
-            bank.setCreatedBy("Kevin Bowersox");
-            bank.setCreatedDate(new Date());
-            bank.setLastUpdatedBy("Kevin Bowersox");
-            bank.setLastUpdatedDate(new Date());
-            bank.setInternational(false);
+            User user = new User();
+            Credential credential = new Credential();
+            setUserFields(user);
 
-            session.persist(bank);
+            session.persist(user);
             transaction.commit();
 
+            User dbuser = session.get(User.class, credential.getUser().getUserId());
+            System.out.println(dbuser.getFirstName());
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } finally {
             session.close();
             HibernateUtil.getSessionFactory().close();
@@ -44,15 +37,29 @@ public class Application {
         calendar.set(Calendar.DATE, 19);
         return calendar.getTime();
     }
+    private static void setAddressFields(Address address) {
+        address.setAddressLine1("line 1");
+        address.setAddressLine2("line 2");
+        address.setCity("New York");
+        address.setState("NY");
+        address.setZipCode("12345");
+    }
+    private static void setAddressFields2(Address address) {
+        address.setAddressLine1("line 1");
+        address.setAddressLine2("line 2");
+        address.setCity("Corning");
+        address.setState("NY");
+        address.setZipCode("12345");
+    }
+    private static void setUserFields(User user) {
+        user.setBirthDate(getMyBirthDay());
+        user.setCreatedBy("kevin");
+        user.setCreatedDate(new Date());
+        user.setEmailAddress("kmb385@yahoo.com.br");
+        user.setFirstName("Kevin");
+        user.setLastName("Bowersox");
+        user.setLastUpdatedBy("kevin");
+        user.setLastUpdatedDate(new Date());
+    }
 
-    //            session.getTransaction().begin();
-//            User user = new User();
-//            user.setBirthDate(getMyBirthDay());
-//            user.setCreatedBy("kevin");
-//            user.setCreatedDate(new Date());
-//            user.setEmailAddress("kmb385@yahoo.com.br");
-//            user.setFirstName("Kevin");
-//            user.setLastName("Bowersox");
-//            user.setLastUpdatedBy("kevin");
-//            user.setLastUpdatedDate(new Date());
 }

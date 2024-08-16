@@ -2,16 +2,16 @@ package com.curso.data.entities;
 
 import jakarta.persistence.*;
 
+import java.util.*;
+
 @Entity
 @Table(name = "BANK")
 public class Bank {
 
-    // bah
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BANK_ID")
     private long bankID;
-
     @Embedded
     private Address address = new Address();
     @Column(name = "NAME")
@@ -29,6 +29,12 @@ public class Bank {
     private java.util.Date createdDate;
     @Column(name = "LAST_UPDATED_BY")
     private String lastUpdatedBy;
+
+    @ElementCollection
+    @CollectionTable(name = "BANK_CONTACT", joinColumns = @JoinColumn(name = "BANK_ID"))
+    @MapKeyColumn(name = "POSITION_TYPE")
+    @Column(name = "NAME")
+    private Map<String, String> contacts = new HashMap<>();
 
     public long getBankID() {
         return bankID;
@@ -94,4 +100,11 @@ public class Bank {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    public Map<String, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Map<String, String> contacts) {
+        this.contacts = contacts;
+    }
 }
