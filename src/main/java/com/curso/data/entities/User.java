@@ -31,9 +31,6 @@ public class User {
     @Column(name = "CREATED_BY", updatable = false)
     private String createdBy;
 
-    @OneToOne(mappedBy = "user")
-    private Credential credential;
-
     @Transient
     private boolean valid;
     @Formula("(FLOOR(DATEDIFF(CURDATE(), birth_date) / 365.25))")
@@ -140,11 +137,5 @@ public class User {
         this.age = age;
     }
 
-    public Credential getCredential() {
-        return credential;
-    }
 
-    public void setCredential(Credential credential) {
-        this.credential = credential;
-    }
 }

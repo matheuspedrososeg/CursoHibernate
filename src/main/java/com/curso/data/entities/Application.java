@@ -2,7 +2,8 @@ package com.curso.data.entities;
 
 import com.curso.data.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,16 +11,16 @@ public class Application {
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Transaction transaction = session.beginTransaction();
-            User user = new User();
-            Credential credential = new Credential();
-            setUserFields(user);
+            org.hibernate.Transaction transaction = session.beginTransaction();
+            Account account = new Account();
+            account.getTransactions().add(createNewBeltPurchase(account));
+            account.getTransactions().add(createShoePurchase(account));
 
-            session.persist(user);
+            session.persist(account);
             transaction.commit();
 
-            User dbuser = session.get(User.class, credential.getUser().getUserId());
-            System.out.println(dbuser.getFirstName());
+            Transaction dbTransaction = session.get(Transaction.class, account.getTransactions().get(0).getTransactionId());
+            System.out.println(dbTransaction.getAccount().getName());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,5 +62,51 @@ public class Application {
         user.setLastUpdatedBy("kevin");
         user.setLastUpdatedDate(new Date());
     }
+    private static com.curso.data.entities.Transaction createNewBeltPurchase(Account account) {
+        com.curso.data.entities.Transaction beltPurchase = new com.curso.data.entities.Transaction();
+        beltPurchase.setAccount(account);
+        beltPurchase.setTitle("Dress Belt");
+        beltPurchase.setAmount(new BigDecimal("50.00"));
+        beltPurchase.setClosingBalance(new BigDecimal("0.00"));
+        beltPurchase.setCreatedBy("Kevin Bowersox");
+        beltPurchase.setCreatedDate(new Date());
+        beltPurchase.setInitialBalance(new BigDecimal("0.00"));
+        beltPurchase.setLastUpdatedBy("Kevin Bowersox");
+        beltPurchase.setLastUpdatedDate(new Date());
+        beltPurchase.setNotes("New Dress Belt");
+        beltPurchase.setTransactionType("Debit");
+        return beltPurchase;
+    }
+
+    private static com.curso.data.entities.Transaction createShoePurchase(Account account) {
+        com.curso.data.entities.Transaction shoePurchase = new com.curso.data.entities.Transaction();
+        shoePurchase.setAccount(account);
+        shoePurchase.setTitle("Work Shoes");
+        shoePurchase.setAmount(new BigDecimal("100.00"));
+        shoePurchase.setClosingBalance(new BigDecimal("0.00"));
+        shoePurchase.setCreatedBy("Kevin Bowersox");
+        shoePurchase.setCreatedDate(new Date());
+        shoePurchase.setInitialBalance(new BigDecimal("0.00"));
+        shoePurchase.setLastUpdatedBy("Kevin Bowersox");
+        shoePurchase.setLastUpdatedDate(new Date());
+        shoePurchase.setNotes("Nice Pair of Shoes");
+        shoePurchase.setTransactionType("Debit");
+        return shoePurchase;
+    }
+
+    private static Account createNewAccount() {
+        Account account = new Account();
+        account.setCloseDate((java.sql.Date) new Date());
+        account.setOpenDate((java.sql.Date) new Date());
+        account.setCreatedBy("Kevin Bowersox");
+        account.setInitialBalance(new BigDecimal("50.00"));
+        account.setName("Savings Account");
+        account.setCurrentBalance(new BigDecimal("100.00"));
+        account.setLastUpdatedBy("Kevin Bowersox");
+        account.setLastUpdatedDate((java.sql.Date) new Date());
+        account.setCreatedDate((java.sql.Date) new Date());
+        return account;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.curso.data;
 
+import com.curso.data.entities.Account;
 import com.curso.data.entities.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -11,9 +12,13 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         try {
             Configuration configuration = new Configuration();
+            configuration.configure();
+            configuration.addAnnotatedClass(Account.class);
             configuration.addAnnotatedClass(User.class);
-            return configuration.
-                    buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
+            return configuration
+                    .buildSessionFactory(new StandardServiceRegistryBuilder()
+                            .applySettings(configuration.getProperties())
+                            .build());
 
         } catch (Exception e) {
             e.printStackTrace();

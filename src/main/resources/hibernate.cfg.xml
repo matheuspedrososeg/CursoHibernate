@@ -20,6 +20,9 @@
         <mapping class="com.curso.data.entities.TimeTest"/>
         <mapping class="com.curso.data.entities.Bank"/>
         <mapping class="com.curso.data.entities.Credential"/>
+        <mapping class="com.curso.data.entities.Account"/>
+        <mapping class="com.curso.data.entities.Transaction"/>
+
 
     </session-factory>
 </hibernate-configuration>
