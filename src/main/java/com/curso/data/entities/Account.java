@@ -1,48 +1,37 @@
 package com.curso.data.entities;
 
-import jakarta.persistence.*;
-
+import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "ACCOUNT")
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="account")
-    List<com.curso.data.entities.Transaction> transactions = new ArrayList<>();
+
+    private Set<User> users = new HashSet<>();
 
     @Column(name = "NAME")
     private String name;
-
     @Column(name = "INITIAL_BALANCE")
     private BigDecimal initialBalance;
-
     @Column(name = "CURRENT_BALANCE")
     private BigDecimal currentBalance;
-
     @Column(name = "OPEN_DATE")
     private Date openDate;
-
     @Column(name = "CLOSE_DATE")
     private Date closeDate;
-
     @Column(name = "LAST_UPDATED_DATE")
     private Date lastUpdatedDate;
-
     @Column(name = "LAST_UPDATED_BY")
     private String lastUpdatedBy;
-
     @Column(name = "CREATED_DATE")
     private Date createdDate;
-
     @Column(name = "CREATED_BY")
     private String createdBy;
 
@@ -126,13 +115,7 @@ public class Account {
         this.createdBy = createdBy;
     }
 
-    public List<com.curso.data.entities.Transaction> getTransactions() {
-        return transactions;
-    }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
 
 
 }

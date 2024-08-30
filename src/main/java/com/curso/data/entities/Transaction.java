@@ -3,7 +3,7 @@ package com.curso.data.entities;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TRANSACTION")
@@ -14,8 +14,8 @@ public class Transaction {
     @Column(name = "TRANSACTION_ID")
     private Long transactionId;
 
-    @ManyToOne
-    @JoinColumn(name="ACCOUNT_ID")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     @Column(name = "TRANSACTION_TYPE")

@@ -1,7 +1,6 @@
 package com.curso.data.entities;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.Formula;
+import javax.persistence.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;

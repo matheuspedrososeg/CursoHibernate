@@ -1,7 +1,7 @@
 package com.curso.data.entities;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.hibernate.annotations.Formula;
 
 import java.util.Date;
@@ -30,6 +30,9 @@ public class User {
     private Date createdDate;
     @Column(name = "CREATED_BY", updatable = false)
     private String createdBy;
+
+    @OneToOne(mappedBy = "user")
+    private Credential credential;
 
     @Transient
     private boolean valid;
@@ -135,6 +138,13 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public Credential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Credential credential) {
+        this.credential = credential;
     }
 
 
