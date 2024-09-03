@@ -1,6 +1,5 @@
 package com.curso.data.entities;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
@@ -13,12 +12,14 @@ public class Account {
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
-    @ManyToMany(cascade =  CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ACCOUNT", joinColumns = @JoinColumn(name = "ACCOUNT_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private Set<User> users = new HashSet<>();
 
+    @Column(name = "ACCOUNT_TYPE")
+    private AccountType accountType;
     @ManyToOne
-    @JoinColumn(name="BANK_ID")
+    @JoinColumn(name = "BANK_ID")
     private Bank bank;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
@@ -146,5 +147,13 @@ public class Account {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 }

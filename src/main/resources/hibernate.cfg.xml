@@ -21,6 +21,8 @@
         <mapping class="com.curso.data.entities.Account"/>
         <mapping class="com.curso.data.entities.Transaction"/>
         <mapping class="com.curso.data.entities.Budget"/>
+        <mapping class="com.curso.data.entities.Currency"/>
+        <mapping class="com.curso.data.entities.Market"/>
 
 
     </session-factory>

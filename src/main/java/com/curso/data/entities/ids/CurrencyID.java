@@ -17,11 +17,11 @@ public class CurrencyID implements Serializable {
         this.countryName = countryName;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public String getCountryName() {
+    public final String getCountryName() {
         return countryName;
     }
 }

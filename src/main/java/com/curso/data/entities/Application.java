@@ -1,6 +1,7 @@
 package com.curso.data.entities;
 
 import com.curso.data.HibernateUtil;
+import com.curso.data.entities.ids.CurrencyID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -31,16 +32,21 @@ public class Application {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Currency currency = new Currency();
-            currency.setCountryName("United States");
-            currency.setName("Dollar");
-            currency.setSymbol("$");
-
-            session.persist(currency);
+            Account account = createNewAccount();
+            account.setAccountType(AccountType.SAVINGS);
+            session.save(account);
             tx.commit();
-        } catch (Exception e) {
 
+            Account dbaccount = (Account) session.get(Account.class, account.getAccountId());
+            System.out.println(dbaccount.getName());
+            System.out.println(dbaccount.getAccountType());
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
         } finally {
+            session.close();
+            sessionFactory.close();
+
         }
 
     }
