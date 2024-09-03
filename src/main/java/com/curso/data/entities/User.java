@@ -5,6 +5,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.Formula;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "FINANCES_USER")
@@ -14,6 +16,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long userId;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private Set<Account> accountSet = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private Credential credential;
+
+
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "LAST_NAME")
@@ -30,9 +40,6 @@ public class User {
     private Date createdDate;
     @Column(name = "CREATED_BY", updatable = false)
     private String createdBy;
-
-    @OneToOne(mappedBy = "user")
-    private Credential credential;
 
     @Transient
     private boolean valid;
@@ -147,5 +154,12 @@ public class User {
         this.credential = credential;
     }
 
+    public Set<Account> getAccountSet() {
+        return accountSet;
+    }
+
+    public void setAccountSet(Set<Account> accountSet) {
+        this.accountSet = accountSet;
+    }
 
 }

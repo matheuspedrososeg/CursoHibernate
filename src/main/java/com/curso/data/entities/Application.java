@@ -1,36 +1,63 @@
 package com.curso.data.entities;
 
+import com.curso.data.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.curso.data.HibernateUtil;
-import org.hibernate.Session;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 public class Application {
 
     public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("maeda-sys");
+//        EntityManager em = emf.createEntityManager();
+//        EntityTransaction tx = em.getTransaction();
+//        tx.begin();
+
+        SessionFactory sessionFactory = null;
+        Session session = null;
+        Session session1 = null;
+        org.hibernate.Transaction tx = null;
+        org.hibernate.Transaction tx1 = null;
 
         try {
-            org.hibernate.Transaction transaction = session.beginTransaction();
-            Account account = createNewAccount();
-            Budget budget = new Budget();
-            budget.setGoalAmount(new BigDecimal("10000.00"));
-            budget.setName("Emergency Fund");
-            budget.setPeriod("Yearly");
-            budget.getTransactions().add(createNewBeltPurchase(account));
-            budget.getTransactions().add(createShoePurchase(account));
+            sessionFactory = HibernateUtil.getSessionFactory();
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
 
+            Currency currency = new Currency();
+            currency.setCountryName("United States");
+            currency.setName("Dollar");
+            currency.setSymbol("$");
 
-            session.save(budget);
-            transaction.commit();
-
+            session.persist(currency);
+            tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            session.close();
-            HibernateUtil.getSessionFactory().close();
+
+        } finally {
         }
+
+    }
+    private static Bank createBank() {
+        Bank bank = new Bank();
+        bank.setName("First united Federal");
+        bank.getAddress().setAddressLine1("103 Washington Plaza");
+        bank.getAddress().setAddressLine2("Suite 332");
+        bank.getAddress().setCity("New York");
+        bank.setCreatedBy("Kevin Bowersox");
+        bank.setCreatedDate(new Date());
+        bank.setInternational(false);
+        bank.setLastUpdatedBy("Kevin Bowersox");
+        bank.setLastUpdatedDate(new Date());
+        bank.getAddress().setState("NY");
+        bank.getAddress().setZipCode("10000");
+        return bank;
     }
 
     private static Transaction createNewBeltPurchase(Account account) {
@@ -48,8 +75,8 @@ public class Application {
         beltPurchase.setTransactionType("Debit");
         return beltPurchase;
     }
-    private static User createNewUser(User user) {
-        User usuario = new User();
+    private static User createNewUser() {
+        User user = new User();
         user.setFirstName("Kevin");
         user.setLastName("Bowersox");
         user.setAge(20);
