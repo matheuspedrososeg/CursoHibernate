@@ -6,6 +6,9 @@ import java.util.*;
 
 @Entity
 @Table(name = "ACCOUNT")
+@NamedQueries({
+        @NamedQuery(name = "Account.largeDeposits", query = "select distinct t.account from Transaction t where t.amount > 500 and lower(t.transactionType) = 'deposit'")
+})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +19,7 @@ public class Account {
     @JoinTable(name = "USER_ACCOUNT", joinColumns = @JoinColumn(name = "ACCOUNT_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private Set<User> users = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ACCOUNT_TYPE")
     private AccountType accountType;
     @ManyToOne

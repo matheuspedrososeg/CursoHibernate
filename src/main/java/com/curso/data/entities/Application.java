@@ -1,18 +1,18 @@
 package com.curso.data.entities;
 
 import com.curso.data.HibernateUtil;
-import com.curso.data.entities.ids.CurrencyID;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
+@SuppressWarnings("unchecked")
 public class Application {
 
     public static void main(String[] args) {
@@ -21,25 +21,41 @@ public class Application {
 //        EntityTransaction tx = em.getTransaction();
 //        tx.begin();
 
+
         SessionFactory sessionFactory = null;
         Session session = null;
-        Session session1 = null;
+
         org.hibernate.Transaction tx = null;
-        org.hibernate.Transaction tx1 = null;
+
+        int pageNUm = 4;
+        int pageSize = 4;
 
         try {
             sessionFactory = HibernateUtil.getSessionFactory();
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Account account = createNewAccount();
-            account.setAccountType(AccountType.SAVINGS);
-            session.save(account);
+            Criteria criteria = session.createCriteria(Transaction.class).addOrder(Order.asc("title"));
+            criteria.setFirstResult((pageNUm - 1) * pageSize);
+            criteria.setMaxResults(pageSize);
+
+            List<Transaction> transactions = criteria.list();
+
+
+
+//            Criterion criterion = Restrictions.le("amount", new BigDecimal("20.00"));
+//            Criterion criterion1 = Restrictions.eq("transactionType", "Withdrawl");
+//
+//            List<Transaction> transactions = session.createCriteria(Transaction.class).add(Restrictions.and(criterion, criterion1))
+//                    .addOrder(Order.desc("title")).list();
+//
+
+            for (Transaction t : transactions) {
+                System.out.println(t.getTitle());
+            }
+
             tx.commit();
 
-            Account dbaccount = (Account) session.get(Account.class, account.getAccountId());
-            System.out.println(dbaccount.getName());
-            System.out.println(dbaccount.getAccountType());
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
@@ -50,6 +66,29 @@ public class Application {
         }
 
     }
+
+    private static Bond createBond() {
+        Bond bond = new Bond();
+        bond.setInterestRate(new BigDecimal("123.22"));
+        bond.setIssuer("JP Morgan Chase");
+        bond.setMaturityDate(new Date());
+        bond.setPurchaseDate(new Date());
+        bond.setName("Long Term Bond Purchases");
+        bond.setValue(new BigDecimal("10.22"));
+        return bond;
+    }
+
+    private static Stock createStock() {
+        Stock stock = new Stock();
+        stock.setIssuer("Allen Edmonds");
+        stock.setName("Private American Stock Purchases");
+        stock.setPurchaseDate(new Date());
+        stock.setQuantity(new BigDecimal("1922"));
+        stock.setSharePrice(new BigDecimal("100.00"));
+        return stock;
+    }
+
+
     private static Bank createBank() {
         Bank bank = new Bank();
         bank.setName("First united Federal");
@@ -81,6 +120,7 @@ public class Application {
         beltPurchase.setTransactionType("Debit");
         return beltPurchase;
     }
+
     private static User createNewUser() {
         User user = new User();
         user.setFirstName("Kevin");
